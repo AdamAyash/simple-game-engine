@@ -1,0 +1,37 @@
+cmake_minimum_required(VERSION 3.10)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+project(Engine)
+
+set(PROJECT_SOURCE_FILES
+    source/Engine.h
+    source/Engine.cpp
+    source/Application.h
+    source/Application.cpp
+)
+
+# Include engine headers
+include_directories(source)
+
+# Build the engine as a library
+add_library(${PROJECT_NAME} ${PROJECT_SOURCE_FILES})
+
+# ==== Thirdparty setup ====
+
+# Add GLFW library
+add_subdirectory(thirdparty/glfw-3.4 "${CMAKE_CURRENT_BINARY_DIR}/glfw_build")
+include_directories(thirdparty/glfw-3.4/include)
+
+# Add GLEW library
+set(BUILD_UTILS OFF CACHE BOOL "utilities" FORCE)
+add_subdirectory(thirdparty/glew/build/cmake "${CMAKE_CURRENT_BINARY_DIR}/glew_build")
+include_directories(thirdparty/glew/include)
+set_property(TARGET glew_s PROPERTY FOLDER GLEW)
+set_property(TARGET glew   PROPERTY FOLDER GLEW)
+
+# Link all thirdparty libraries to Engine
+target_link_libraries(${PROJECT_NAME}
+    glfw
+    glew_s
+)
