@@ -3,6 +3,7 @@
 #include <memory>
 #include <chrono>
 #include "input/InputManager.h"
+#include "graphics/GraphicsAPI.h"
 
 struct GLFWwindow;
 
@@ -30,11 +31,13 @@ namespace engine
 		void SetApplication(Application* application);
 		Application* GetApplication();
 		InputManager& GetInputManager();
+		GraphicsAPI& GetGraphicsAPI();
 
 	private:
 		std::unique_ptr<Application> m_oApplication;
 		std::chrono::steady_clock::time_point m_lastTimePoint;
 		GLFWwindow* m_window = nullptr;
 		InputManager m_inputManager;
+		GraphicsAPI m_graphicsAPI;
 	};
 }
