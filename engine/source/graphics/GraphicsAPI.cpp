@@ -63,6 +63,16 @@ namespace engine
 		return ebo;
 	}
 
+	void GraphicsAPI::SetClearColor(float r, float g, float b, float a)
+	{
+		glClearColor(r, g, b, a);
+	}
+
+	void GraphicsAPI::ClearBuffers()
+	{
+		glClear(GL_COLOR_BUFFER_BIT);
+	}
+
 	void GraphicsAPI::BindShaderProgram(ShaderProgram* shaderProgram)
 	{
 		if (shaderProgram)
@@ -71,7 +81,7 @@ namespace engine
 		}
 	}
 
-	void BindMaterial(Material* material)
+	void GraphicsAPI::BindMaterial(Material* material)
 	{
 		if (material)
 			material->Bind();

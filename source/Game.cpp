@@ -7,20 +7,27 @@ bool Game::Init()
 	auto vertexShader = R"(
 	#version 330 core
 	layout (location = 0) in vec3 oPosition;
+	layout (location = 1) in vec3 oColor;
+
+	uniform vec2 uOffset;
+
+	out vec3 ouputColor; 
 	
 	void main()
 	{
-		gl_Position = vec4(oPosition, 1.0);
+		gl_Position = vec4(oPosition.x + uOffset.x, oPosition.y + uOffset.y, oPosition.z, 1.0);
+		ouputColor = oColor;
 	}
 )";
 
 	auto fragmentShader = R"(
 	#version 330 core
 	out vec4 color;
-	
+	in vec3	ouputColor;
+
 	void main()
 	{
-		color = vec4(1.0, 1.0, 1.0, 1.0);
+		color = vec4(ouputColor, 1.0);
 	}
 )";
 
@@ -44,14 +51,14 @@ bool Game::Init()
 
 	engine::VertexLayout vertexLayout;
 	vertexLayout.elements.push_back({
-		1,
+		0,
 		3,
 		GL_FLOAT,
 		0
 		});
 
 	vertexLayout.elements.push_back({
-	0,
+	1,
 	3,
 	GL_FLOAT,
 	sizeof(float) * 3
@@ -66,10 +73,33 @@ bool Game::Init()
 void Game::Update(float deltaTime)
 {
 	auto& input = engine::Engine::GetInstance().GetInputManager();
+
 	if (input.IsKeyPressed(GLFW_KEY_A))
 	{
-		std::cout << "[A] button is pressed" << std::endl;
+		m_offsetX -= 0.01f;
 	}
+	else if (input.IsKeyPressed(GLFW_KEY_D))
+	{
+		m_offsetX += 0.01f;
+	}
+
+	if (input.IsKeyPressed(GLFW_KEY_W))
+	{
+		m_offsetY += 0.01f;
+	}
+	else if (input.IsKeyPressed(GLFW_KEY_S))
+	{
+		m_offsetY -= 0.01f;
+	}
+
+	m_Material.SetParam("uOffset", m_offsetX, m_offsetY);
+
+	engine::RenderCommand command;
+	command.material = &m_Material;
+	command.mesh = m_mesh.get();
+
+	auto& renderQueue = engine::Engine::GetInstance().GetRenderQueue();
+	renderQueue.Sumbmit(command);
 }
 
 void Game::Destroy()

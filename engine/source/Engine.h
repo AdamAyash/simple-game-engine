@@ -4,6 +4,7 @@
 #include <chrono>
 #include "input/InputManager.h"
 #include "graphics/GraphicsAPI.h"
+#include "render/RenderQueue.h"
 
 struct GLFWwindow;
 
@@ -32,6 +33,7 @@ namespace engine
 		Application* GetApplication();
 		InputManager& GetInputManager();
 		GraphicsAPI& GetGraphicsAPI();
+		RenderQueue& GetRenderQueue();
 
 	private:
 		std::unique_ptr<Application> m_oApplication;
@@ -39,5 +41,6 @@ namespace engine
 		GLFWwindow* m_window = nullptr;
 		InputManager m_inputManager;
 		GraphicsAPI m_graphicsAPI;
+		RenderQueue m_renderQueue;
 	};
 }

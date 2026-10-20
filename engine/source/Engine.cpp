@@ -75,6 +75,11 @@ namespace engine
 
 			m_oApplication->Update(deltaTime);
 
+			m_graphicsAPI.SetClearColor(1.0, 1.0, 1.0, 1.0);
+			m_graphicsAPI.ClearBuffers();
+
+			m_renderQueue.Draw(m_graphicsAPI);
+
 			glfwSwapBuffers(m_window);
 		}
 	}
@@ -108,5 +113,10 @@ namespace engine
 	GraphicsAPI& Engine::GetGraphicsAPI()
 	{
 		return m_graphicsAPI;
+	}
+
+	RenderQueue& Engine::GetRenderQueue()
+	{
+		return m_renderQueue;
 	}
 }
