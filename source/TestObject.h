@@ -1,0 +1,15 @@
+#include <eng.h>
+
+class TestObject : public engine::GameObject
+{
+public:
+	TestObject();
+
+	void Update(float deltaTime) override;
+
+private:
+	engine::Material m_Material;
+	std::shared_ptr<engine::Mesh> m_mesh;
+	float m_offsetX = 0;
+	float m_offsetY = 0;
+};
